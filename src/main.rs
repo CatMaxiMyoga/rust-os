@@ -7,16 +7,18 @@ use core::panic::PanicInfo;
 mod vga_buffer;
 
 #[panic_handler]
-fn panic(_info: &PanicInfo)-> ! { loop {} }
+fn panic(info: &PanicInfo)-> ! {
+    println!("{}", info);
+    loop {}
+}
 
 #[unsafe(no_mangle)]
 pub extern "C" fn _start() -> ! {
-    use core::fmt::Write;
-    vga_buffer::WRITER.lock().write_str("Hello again!").unwrap();
-    write!(vga_buffer::WRITER.lock(), "  some numbers: {} {}", 42, 2.357)
-        .unwrap();
-    writeln!(vga_buffer::WRITER.lock(), "\nHello!").unwrap();
+    print!("\nHello!");
+    println!("  Some numbers: {} {:.2}", 42, 2.357);
+    panic!("Some Panic Message!!");
 
+    /* Unreachable code */
     #[allow(clippy::empty_loop)]
     loop {}
 }
