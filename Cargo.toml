@@ -1,0 +1,23 @@
+[package]
+name = "rust-os"
+version = "0.1.0"
+edition = "2024"
+
+[[bin]]
+name = "rust-os"
+path = "src/main.rs"
+test = false
+
+[profile.dev]
+panic = "abort"
+
+[profile.release]
+panic = "abort"
+
+[dependencies]
+
+# [build-dependencies]
+# bootimage = { version = "0.10.3", default-features = false }
+#
+# [package.metadata.bootimage]
+# target = "x86_64-unknown-none"
