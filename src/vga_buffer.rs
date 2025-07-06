@@ -1,3 +1,5 @@
+use lazy_static::lazy_static;
+use spin::Mutex;
 use volatile::Volatile;
 use core::fmt::{Write, Result};
 
@@ -115,16 +117,10 @@ impl Write for Writer {
     }
 }
 
-pub fn print_something() {
-    let mut writer = Writer {
+lazy_static! {
+    pub static ref WRITER: Mutex<Writer> = Mutex::new(Writer {
         column_position: 0,
         color_code: ColorCode::new(Color::Yellow, Color::Red),
         buffer: unsafe { &mut *(0xb8000 as *mut Buffer) }
-    };
-
-    writer.write_byte(b'H');
-    writer.write_string("ello ");
-    writer.write_string("Wörld!");
-    writeln!(writer, "  5 + 7 is {}", 5+7).unwrap();
-    writeln!(writer, "Hello again!").unwrap();
+    });
 }
