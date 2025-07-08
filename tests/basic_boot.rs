@@ -7,30 +7,21 @@
 
 use core::panic::PanicInfo;
 use rust_os::println;
-// use core::arch::asm;
-
 
 #[unsafe(no_mangle)]
 pub extern "C" fn _start() -> ! {
-    println!("Hello World!");
-
-    #[cfg(test)]
     test_main();
 
     #[allow(clippy::empty_loop)]
     loop {}
 }
 
-#[cfg(test)]
 #[panic_handler]
-pub fn test_panic_handler(info: &PanicInfo) -> ! {
+fn panic(info: &PanicInfo) -> ! {
     rust_os::test_panic_handler(info);
 }
 
-#[cfg(not(test))]
-#[panic_handler]
-fn panic(info: &PanicInfo) -> ! {
-    println!("{}", info);
-    loop {}
+#[test_case]
+fn test_println() {
+    println!("test_println output");
 }
-
